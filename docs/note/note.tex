@@ -1,0 +1,443 @@
+\documentclass[12pt, onecolumn]{article}
+\setlength\paperwidth{23cm}
+% 引入相关的包
+\usepackage{amsmath, listings, fontspec, geometry, graphicx, ctex, color, subfigure, amsfonts, amssymb}
+\usepackage{multirow}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage[ruled]{algorithm2e}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=red,
+	citecolor=red,
+}
+
+% 设定页面的尺寸和比例
+\geometry{left = 1.5cm, right = 1.5cm, top = 1.5cm, bottom = 1.5cm}
+
+% 设定两栏之间的间距
+\setlength\columnsep{1cm}
+
+% 设定字体，为代码的插入作准备
+\newfontfamily\ubuntu{Ubuntu Mono}
+\newfontfamily\consolas{Consolas}
+
+% 头部信息
+\title{\normf{RIs时空标定方法}}
+\author{\normf{陈烁龙}}
+\date{\normf{\today}}
+
+% 代码块的风格设定
+\lstset{
+	language=C++,
+	basicstyle=\scriptsize\ubuntu,
+	keywordstyle=\textbf,
+	stringstyle=\itshape,
+	commentstyle=\itshape,
+	numberstyle=\scriptsize\ubuntu,
+	showstringspaces=false,
+	numbers=left,
+	numbersep=8pt,
+	tabsize=2,
+	frame=single,
+	framerule=1pt,
+	columns=fullflexible,
+	breaklines,
+	frame=shadowbox, 
+	backgroundcolor=\color[rgb]{0.97,0.97,0.97}
+}
+
+% 字体族的定义
+% \fangsong \songti \heiti \kaishu
+\newcommand\normf{\fangsong}
+\newcommand\boldf{\heiti}
+\newcommand\keywords[1]{\boldf{关键词：} \normf #1}
+
+\newcommand\liehat[1]{\left[ #1 \right]_\times}
+\newcommand\lievee[1]{\left[ #1 \right]^\vee}
+\newcommand\liehatvee[1]{\left[ #1 \right]^\vee_\times}
+
+\newcommand\mynote[1]{{\bf{\emph{\textcolor{blue}{* \normf{#1} ...}}}}}
+
+\newcommand\mlcomment[1]{\iffalse #1 \fi}
+%\newcommand\mlcomment[1]{ #1 }
+
+\begin{document}
+	
+	% 插入头部信息
+	\maketitle
+	% 换页
+	\thispagestyle{empty}
+	\clearpage
+	
+	% 插入目录、图、表并换页
+	\pagenumbering{roman}
+	\tableofcontents
+	\newpage
+	\listoffigures
+	\newpage
+	\listoftables
+	% 罗马字母形式的页码
+	
+	\clearpage
+	% 从该页开始计数
+	\setcounter{page}{1}
+	% 阿拉伯数字形式的页码
+	\pagenumbering{arabic}
+	
+	
+	\section{\normf{Radar Static Measurement (V1)}}
+	The continuous-time trajectory is the one of other sensor (e.g., IMU), we have:
+	\begin{equation}
+	{^{b_0}\boldsymbol{p}_t}={^{b_0}_{b}\boldsymbol{R}(\tau)}\cdot{^{b}\boldsymbol{p}_t(\tau)}+{^{b_0}\boldsymbol{p}_{b}(\tau)}
+	\end{equation}
+	with
+	\begin{equation}
+	{^{b}\boldsymbol{p}_t(\tau)}={^{b}_{r}\boldsymbol{R}}\cdot{^{r}\boldsymbol{p}_t(\tau)}+{^{b}\boldsymbol{p}_{r}}
+	\end{equation}
+	then
+	\begin{equation}
+	{^{b_0}\boldsymbol{p}_t}={^{b_0}_{b}\boldsymbol{R}(\tau)}\cdot{^{b}_{r}\boldsymbol{R}}\cdot{^{r}\boldsymbol{p}_t(\tau)}
+	+{^{b_0}_{b}\boldsymbol{R}(\tau)}\cdot{^{b}\boldsymbol{p}_{r}}
+	+{^{b_0}\boldsymbol{p}_{b}(\tau)}
+	\end{equation}
+	differentiate
+	\begin{equation}
+	{^{b_0}\dot{\boldsymbol{p}}_t}=\boldsymbol{0}_{3\times 1}=
+	-\liehat{{^{b_0}_{b}\boldsymbol{R}(\tau)}\cdot{^{b}_{r}\boldsymbol{R}}\cdot{^{r}\boldsymbol{p}_t(\tau)}}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(\tau)}
+	+{^{b_0}_{b}\boldsymbol{R}(\tau)}\cdot{^{b}_{r}\boldsymbol{R}}\cdot{^{r}\dot{\boldsymbol{p}}_t(\tau)}
+	-\liehat{{^{b_0}_{b}\boldsymbol{R}(\tau)}\cdot{^{b}\boldsymbol{p}_{r}}}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(\tau)}
+	+{^{b_0}\dot{\boldsymbol{p}}_{b}(\tau)}
+	\end{equation}
+	\begin{equation}
+	\boldsymbol{0}_{3\times 1}=
+	-\liehat{{^{b}_{r}\boldsymbol{R}}\cdot{^{r}\boldsymbol{p}_t(\tau)}}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(\tau)}
+	+{^{b}_{r}\boldsymbol{R}}\cdot{^{r}\dot{\boldsymbol{p}}_t(\tau)}
+	-\liehat{{^{b}\boldsymbol{p}_{r}}}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(\tau)}
+	+{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot{^{b_0}\dot{\boldsymbol{p}}_{b}(\tau)}
+	\end{equation}
+	\begin{equation}
+	\boldsymbol{0}_{3\times 1}=
+	-\liehat{{^{r}\boldsymbol{p}_t(\tau)}}\cdot{^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(\tau)}
+	+{^{r}\dot{\boldsymbol{p}}_t(\tau)}
+	-{^{b}_{r}\boldsymbol{R}^\top}\cdot\liehat{{^{b}\boldsymbol{p}_{r}}}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(\tau)}
+	+{^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot{^{b_0}\dot{\boldsymbol{p}}_{b}(\tau)}
+	\end{equation}
+	thus, the velocity of target $\{t\}$ with respect to the radar $\{r\}$ parameterized in $\{r\}$ could be expressed as:
+	\begin{equation}
+	{^{r}\dot{\boldsymbol{p}}_t(\tau)}=
+	\liehat{{^{r}\boldsymbol{p}_t(\tau)}}\cdot{^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(\tau)}
+	+{^{b}_{r}\boldsymbol{R}^\top}\cdot\liehat{{^{b}\boldsymbol{p}_{r}}}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(\tau)}
+	-{^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot{^{b_0}\dot{\boldsymbol{p}}_{b}(\tau)}
+	\end{equation}
+	
+	\section{\normf{Radar Static Measurement (V2)}}
+	\begin{equation}
+	{^{b_0}{\boldsymbol{p}}_r(\tau)}={^{b_0}_{b}\boldsymbol{R}(\tau)}\cdot{^{b}{\boldsymbol{p}}_r}+{^{b_0}{\boldsymbol{p}}_b(\tau)}
+	\end{equation}
+	\begin{equation}
+	{^{b_0}\dot{\boldsymbol{p}}_r(\tau)}=-\liehat{{^{b_0}_{b}\boldsymbol{R}(\tau)}\cdot{^{b}{\boldsymbol{p}}_r}}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(\tau)}
+	+{^{b_0}\dot{\boldsymbol{p}}_b(\tau)}
+	\end{equation}
+	thus, the velocity of radar $\{r\}$ with respect to the frame $\{b_0\}$ parameterized in $\{r\}$ could be expressed as:
+	\begin{equation}
+	{^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot{^{b_0}\dot{\boldsymbol{p}}_r(\tau)}=
+	{^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot
+	\left(
+	-\liehat{{^{b_0}_{b}\boldsymbol{R}(\tau)}\cdot{^{b}{\boldsymbol{p}}_r}}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(\tau)}
+	+{^{b_0}\dot{\boldsymbol{p}}_b(\tau)}
+	\right) 
+	\end{equation}
+	actually, by introducing ${^{r}\boldsymbol{p}_t^\top(\tau)}$, we have:
+	\begin{equation}
+	{^{r}\boldsymbol{p}_t^\top(\tau)}\cdot{^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot{^{b_0}\dot{\boldsymbol{p}}_r(\tau)}=
+	-{^{r}\boldsymbol{p}_t^\top(\tau)}\cdot{^{r}\dot{\boldsymbol{p}}_t(\tau)}
+	\end{equation}
+	
+	\section{\normf{样条恢复(Rotation \& Velocity B-splines)和重力估计}}
+	\normf
+	对于旋转样条，使用IMU陀螺仪量测进行拟合。对于Radar量测，有：
+	\begin{equation}
+	r\cdot v_r=
+	{^{r}\boldsymbol{p}_t^\top(\tau)}\cdot{^{r}\dot{\boldsymbol{p}}_t(\tau)}
+	\end{equation}
+	或者：
+	\begin{equation}
+	r\cdot v_r=-
+	{^{r}\boldsymbol{p}_t^\top(\tau)}\cdot{^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top}\cdot{^{b_0}\dot{\boldsymbol{p}}_r(\tau)}
+	\end{equation}
+	
+	对于动态target，有：
+	\begin{equation}
+	r\cdot v_r=
+	{^{r}\boldsymbol{p}_t^\top(\tau)}\cdot
+	\left( 
+	{^{r}\dot{\boldsymbol{p}}_t(\tau)}-
+	{^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot
+	{^{b_0}\dot{\boldsymbol{p}}_t}
+	\right) 
+	\end{equation}
+	因为假设了target为静态，所以当有动态target纳入进来时，需要loss函数，一般考虑的最大容许外点为：
+	\begin{equation}
+	\frac{{^{r}\boldsymbol{p}_t^\top(\tau)}\cdot{^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot
+		{^{b_0}\dot{\boldsymbol{p}}_t}}{r}
+	\eqsim
+	\frac{{^{r}\boldsymbol{p}_t^\top(\tau)}\cdot
+		{^{b_0}\dot{\boldsymbol{p}}_t}}{r}
+	\eqsim
+	\cos{45^\circ}\cdot
+	\left\| {^{b_0}\dot{\boldsymbol{p}}_t}\right\| 
+	\le
+	\frac{\sqrt 2}{2}\cdot \frac{1}{2}\;(m/s^2)
+	=\frac{\sqrt 2}{4}\;(m/s^2)
+	\xrightarrow{(\cdot)^2}0.125
+	\end{equation}
+
+	对于IMU量测， 基于连续时间的预积分(速度层面)，有：
+	\begin{equation}
+	{^{b}\boldsymbol{a}(t)}={^{b_0}_{b}\boldsymbol{R}^\top(t)}\cdot\left( {^{b_0}\ddot{\boldsymbol{p}}_b(t)}-{^{b_0}\boldsymbol{g}}\right)
+	\quad\to\quad
+	{^{b_0}_{b}\boldsymbol{R}(t)}\cdot{^{b}\boldsymbol{a}(t)}= {^{b_0}\ddot{\boldsymbol{p}}_b(t)}-{^{b_0}\boldsymbol{g}}
+	\end{equation}
+	在$\tau\in[t_k,t_{k+1}]$时间段内，有：
+	\begin{equation}
+	\int_{\tau\in[t_k,t_{k+1}]}{^{b_0}_{b}\boldsymbol{R}(\tau)}\cdot{^{b}\boldsymbol{a}(\tau)}\cdot d\tau=
+	{^{b_0}\dot{\boldsymbol{p}}_b(t_{k+1})}-{^{b_0}\dot{\boldsymbol{p}}_b(t_k)}
+	-{^{b_0}\boldsymbol{g}}\cdot (t_{k+1}-t_k)
+	\end{equation}
+	
+	\section{\normf{分步初始化}}
+	首先拟合SO3样条，然后初始化外参，再恢复速度曲线。
+	
+	首先通过最小二乘，计算得到${^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top}\cdot{^{b_0}\dot{\boldsymbol{p}}_r(\tau)}$，记为${^{b_0}\dot{\boldsymbol{p}}^r_r(\tau)}$：
+	\begin{equation}
+	r\cdot v_r=-
+	{^{r}\boldsymbol{p}_t^\top(\tau)}\cdot{^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top}\cdot{^{b_0}\dot{\boldsymbol{p}}_r(\tau)}
+	=-{^{r}\boldsymbol{p}_t^\top(\tau)}\cdot{^{b_0}\dot{\boldsymbol{p}}^r_r(\tau)}
+	\end{equation}
+	然后，我们有：
+	\begin{equation}
+	{^{b_0}\dot{\boldsymbol{p}}_b(\tau)}={^{b_0}_{b}\boldsymbol{R}}(\tau)\cdot{^{b}_{r}\boldsymbol{R}}\cdot{^{b_0}\dot{\boldsymbol{p}}^r_r(\tau)}
+	+\liehat{{^{b_0}_{b}\boldsymbol{R}(\tau)}\cdot{^{b}{\boldsymbol{p}}_r}}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(\tau)}
+	\end{equation}
+	所以在$\tau\in[t_k,t_{k+1}]$时间段内，有：：
+	\begin{equation}
+	\int_{\tau\in[t_k,t_{k+1}]}{^{b_0}_{b}\boldsymbol{R}(\tau)}\cdot{^{b}\boldsymbol{a}(\tau)}\cdot d\tau=
+	{^{b_0}\dot{\boldsymbol{p}}_b(t_{k+1})}-{^{b_0}\dot{\boldsymbol{p}}_b(t_k)}
+	-{^{b_0}\boldsymbol{g}}\cdot (t_{k+1}-t_k)
+	\end{equation}
+	
+	\section{\normf{批处理优化}}
+	在批处理优化中，一共有三种因子：
+	\begin{enumerate}
+		\item IMU加速度因子：涉及重力优化，加速度计内参，和速度样条和旋转样条优化；
+		\begin{equation}
+		{^{b}\boldsymbol{a}(t)}={^{b_0}_{b}\boldsymbol{R}^\top(t)}\cdot\left( {^{b_0}\ddot{\boldsymbol{p}}_b(t)}-{^{b_0}\boldsymbol{g}}\right)
+		\end{equation}
+		
+		\item IMU陀螺仪因子：涉及陀螺仪内参优化，旋转样条优化；
+		\begin{equation}
+		{^{b}\boldsymbol{\omega}(t)}={^{b_0}_{b}\boldsymbol{R}^\top(t)}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(t)}
+		\end{equation}
+		
+		\item Radar因子：涉及Radar相对于IMU的外参和时延的优化，速度样条和旋转样条优化；
+		
+	\end{enumerate}
+
+	\section{\normf{多IMU因子}}
+	\normf
+	如果是单一IMU，则其输出和位姿轨迹之间的关系为：
+	\begin{equation}
+	\label{equ:imu_bspline}
+	\begin{cases}
+	\begin{aligned}
+	{^{b}\boldsymbol{a}(t)}&={^{b_0}_{b}\boldsymbol{R}^\top(t)}\cdot({^{b_0}\ddot{\boldsymbol{p}}_I(t)}-{^{b_0}\boldsymbol{g}})\\
+	{^{b}\boldsymbol{\omega}(t)}&={^{b_0}_{b}\boldsymbol{R}^\top(t)}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(t)}
+	\end{aligned}
+	\end{cases}
+	\end{equation}
+	其中$b_0$是参考坐标系(即位姿曲线表达所参考的坐标系)，这里参考的是第一个IMU坐标系，该参考坐标系可以任意更换。假设现在有$n$个IMU刚性连接在一起，另有一个虚拟构建的参考IMU，标号为$c$，则对于第$i$个IMU，有：
+	\begin{equation}
+	\begin{cases}
+	\begin{aligned}
+	{^{b^i}\boldsymbol{a}(t)}&={^{b^c_0}_{b^i}\boldsymbol{R}^\top(t)}\cdot({^{b^c_0}\ddot{\boldsymbol{p}}_{b^i}(t)}-{^{b^c_0}\boldsymbol{g}})
+	\\
+	{^{b^i}\boldsymbol{\omega}(t)}&={^{b^c_0}_{b^i}\boldsymbol{R}^\top(t)}\cdot{^{b^c_0}_{b^i}\dot{\boldsymbol{R}}(t)}
+	\end{aligned}
+	\end{cases}
+	\end{equation}
+	将上式中${^{b^c_0}_{b^i}\boldsymbol{R}(t)}$、${^{b^c_0}_{b^i}\dot{\boldsymbol{R}}(t)}$、${^{b^c_0}\ddot{\boldsymbol{p}}_{b^i}(t)}$表达为参考IMU的位姿轨迹和外参的组合(位姿求导使用左扰动)：
+	\begin{equation}
+	{^{b^c_0}_{b^i}\boldsymbol{T}(t)}={^{b^c_0}_{b^c}\boldsymbol{T}(t)}\cdot{^{b^c}_{b^i}\boldsymbol{T}}\to
+	\begin{cases}
+	\begin{aligned}
+	{^{b^c_0}_{b^i}\boldsymbol{R}(t)}&={^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}_{b^i}\boldsymbol{R}}\\
+	{^{b^c_0}\boldsymbol{p}_{b^i}(t)}&={^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}\boldsymbol{p}_{b^i}}+{^{b^c_0}\boldsymbol{p}_{b^c}(t)}
+	\end{aligned}
+	\end{cases}
+	\end{equation}
+	\begin{equation}
+	\begin{cases}
+	\begin{aligned}
+	{^{b^c_0}_{b^i}\dot{\boldsymbol{R}}(t)}&={^{b^c_0}_{b^c}\dot{\boldsymbol{R}}(t)}\\
+	{^{b^c_0}\dot{\boldsymbol{p}}_{b^i}(t)}&=
+	-\liehat{{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}\boldsymbol{p}_{b^i}}}\cdot{^{b^c_0}_{b^c}\dot{\boldsymbol{R}}(t)}
+	+{^{b^c_0}\dot{\boldsymbol{p}}_{b^c}(t)}
+	\\
+	{^{b^c_0}\ddot{\boldsymbol{p}}_{b^i}(t)}&=
+	-\liehat{{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}\boldsymbol{p}_{b^i}}}\cdot
+	{^{b^c_0}_{b^c}\ddot{\boldsymbol{R}}(t)}+{^{b^c_0}\ddot{\boldsymbol{p}}_{b^c}(t)}
+	-\liehat{{^{b^c_0}_{b^c}\dot{\boldsymbol{R}}(t)}}\cdot
+	\liehat{{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}\boldsymbol{p}_{b^i}}}\cdot{^{b^c_0}_{b^c}\dot{\boldsymbol{R}}(t)}
+	\end{aligned}
+	\end{cases}
+	\end{equation}
+	由于是左扰动，所以角速度向量、加速度向量都表达在全局坐标系$b^c_0$下。这样，基于参考IMU轨迹和外参，可以计算出其余IMU的输出，即可以构建约束。优化的参数可以是参考IMU位姿轨迹、外参、重力向量在参考IMU第一帧坐标系下的坐标。
+	
+	预积分，在$\tau\in[t_k-t_{k+1}]$时间段内，有：
+	\begin{equation}
+	\int_{\tau\in[t_k,t_{k+1}]}{^{b_0^c}_{b^c}\boldsymbol{R}(\tau)}\cdot{^{b^c}\boldsymbol{a}(\tau)}\cdot d\tau=
+	{^{b_0^c}\dot{\boldsymbol{p}}_{b^c}(t_{k+1})}-{^{b_0^c}\dot{\boldsymbol{p}}_{b^c}(t_k)}
+	-{^{b_0^c}\boldsymbol{g}}\cdot (t_{k+1}-t_k)
+	\end{equation}
+	其中${^{b_0^c}_{b^c}\boldsymbol{R}(\tau)}\cdot{^{b^c}\boldsymbol{a}(\tau)}$可以通过下式计算得到：
+	\begin{equation}
+	\begin{aligned}
+	{^{b^i}\boldsymbol{a}(t)}&=\left( {^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}_{b^i}\boldsymbol{R}}
+	\right)^\top
+	\cdot\left( {^{b_0^c}\ddot{\boldsymbol{p}}_{b^i}(t)}-{^{b_0^c}\boldsymbol{g}}\right)
+	\\\to
+	{^{b_0^c}\boldsymbol{g}}&={^{b_0^c}\ddot{\boldsymbol{p}}_{b^i}(t)}-
+	{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}_{b^i}\boldsymbol{R}}
+	\cdot{^{b^i}\boldsymbol{a}(t)}
+	\\
+	{^{b_0^c}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}\boldsymbol{a}(t)}&= {^{b_0^c}\ddot{\boldsymbol{p}}_{b^c}(t)}-{^{b_0^c}\boldsymbol{g}}
+	\\
+	&={^{b_0^c}\ddot{\boldsymbol{p}}_{b^c}(t)}-{^{b_0^c}\ddot{\boldsymbol{p}}_{b^i}(t)}+
+	{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}_{b^i}\boldsymbol{R}}
+	\cdot{^{b^i}\boldsymbol{a}(t)}
+	\\
+	&=-\left(\liehat{{^{b^c_0}_{b^c}\ddot{\boldsymbol{R}}(t)}}
+	+\liehat{{^{b^c_0}_{b^c}\dot{\boldsymbol{R}}(t)}}^2\right) \cdot{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}\boldsymbol{p}_{b^i}}+
+	{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}_{b^i}\boldsymbol{R}}
+	\cdot{^{b^i}\boldsymbol{a}(t)}
+	\end{aligned}
+	\end{equation}
+	其中：
+	\begin{equation}
+	\begin{aligned}
+	&{^{b^c_0}\ddot{\boldsymbol{p}}_{b^i}(t)}=
+	-\liehat{{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}\boldsymbol{p}_{b^i}}}\cdot
+	{^{b^c_0}_{b^c}\ddot{\boldsymbol{R}}(t)}+{^{b^c_0}\ddot{\boldsymbol{p}}_{b^c}(t)}
+	-\liehat{{^{b^c_0}_{b^c}\dot{\boldsymbol{R}}(t)}}\cdot
+	\liehat{{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}\boldsymbol{p}_{b^i}}}\cdot{^{b^c_0}_{b^c}\dot{\boldsymbol{R}}(t)}
+	\\
+	\to&
+	{^{b^c_0}\ddot{\boldsymbol{p}}_{b^c}(t)}-{^{b^c_0}\ddot{\boldsymbol{p}}_{b^i}(t)}=
+	\liehat{{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}\boldsymbol{p}_{b^i}}}\cdot
+	{^{b^c_0}_{b^c}\ddot{\boldsymbol{R}}(t)}
+	+\liehat{{^{b^c_0}_{b^c}\dot{\boldsymbol{R}}(t)}}\cdot
+	\liehat{{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}\boldsymbol{p}_{b^i}}}\cdot{^{b^c_0}_{b^c}\dot{\boldsymbol{R}}(t)}
+	\\
+	\to&{^{b^c_0}\ddot{\boldsymbol{p}}_{b^c}(t)}-{^{b^c_0}\ddot{\boldsymbol{p}}_{b^i}(t)}=
+	-\liehat{{^{b^c_0}_{b^c}\ddot{\boldsymbol{R}}(t)}}\cdot{^{b^c_0}_{b^c}\boldsymbol{R}(t)}
+	\cdot{^{b^c}\boldsymbol{p}_{b^i}}
+	-\liehat{{^{b^c_0}_{b^c}\dot{\boldsymbol{R}}(t)}}\cdot
+	\liehat{{^{b^c_0}_{b^c}\dot{\boldsymbol{R}}(t)}}\cdot{^{b^c_0}_{b^c}\boldsymbol{R}(t)}
+	\cdot{^{b^c}\boldsymbol{p}_{b^i}}
+	\\
+	\to&{^{b^c_0}\ddot{\boldsymbol{p}}_{b^c}(t)}-{^{b^c_0}\ddot{\boldsymbol{p}}_{b^i}(t)}=
+	-\left(\liehat{{^{b^c_0}_{b^c}\ddot{\boldsymbol{R}}(t)}}
+	+\liehat{{^{b^c_0}_{b^c}\dot{\boldsymbol{R}}(t)}}^2\right) \cdot{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}\boldsymbol{p}_{b^i}}
+	\end{aligned}
+	\end{equation}
+	最后有：
+	\begin{equation}
+	\begin{aligned}
+	\int_{\tau\in[t_k,t_{k+1}]}{^{b_0^c}_{b^c}\boldsymbol{R}(\tau)}\cdot{^{b^c}\boldsymbol{a}(\tau)}\cdot d\tau&=
+	-\left( \int_{\tau\in[t_k,t_{k+1}]}\left(\liehat{{^{b^c_0}_{b^c}\ddot{\boldsymbol{R}}(t)}}
+	+\liehat{{^{b^c_0}_{b^c}\dot{\boldsymbol{R}}(t)}}^2\right) \cdot{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot d\tau\right) \cdot{^{b^c}\boldsymbol{p}_{b^i}}
+	\\
+	&\;\;\;\;+\int_{\tau\in[t_k,t_{k+1}]}{^{b^c_0}_{b^c}\boldsymbol{R}(t)}\cdot{^{b^c}_{b^i}\boldsymbol{R}}\cdot{^{b^i}\boldsymbol{a}(t)}\cdot d\tau
+	\\&=-\mathcal{V}_{t_k,t_{k+1}}^{\prime}\cdot{^{b^c}\boldsymbol{p}_{b^i}}+
+	\mathcal{V}_{t_k,t_{k+1}}^{\prime\prime}
+	\end{aligned}
+	\end{equation}
+	
+	\section{\normf{速度约束恢复外参}}
+	使用最小二乘计算$\{r\}$相对于$\{b_0\}$在$\{r\}$系下的速度向量(即：${^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot{^{b_0}\dot{\boldsymbol{p}}_r(\tau)}$, 其中${^{b_0}\dot{\boldsymbol{p}}_r(\tau)}$为$\{r\}$相对于$\{b_0\}$在$\{b_0\}$系下的速度向量)，记为${^{b_0}\dot{\boldsymbol{p}}^r_r(\tau)}$：
+	\begin{equation}
+	r\cdot v_r=-
+	{^{r}\boldsymbol{p}_t^\top(\tau)}\cdot{^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(\tau)}\cdot{^{b_0}\dot{\boldsymbol{p}}_r(\tau)}
+	=-{^{r}\boldsymbol{p}_t^\top(\tau)}\cdot{^{b_0}\dot{\boldsymbol{p}}^r_r(\tau)}
+	\end{equation}
+	样条为(IMU在$\{b_0\}$系下的轨迹)：
+	\begin{equation}
+	{^{b_0}_{b}\boldsymbol{T}(t)}=\left\lbrace {^{b_0}_{b}\boldsymbol{R}(t)}, {^{b_0}\boldsymbol{p}_{b}(t)}\right\rbrace 
+	\end{equation}
+	有几何变换：
+	\begin{equation}
+	{^{b_0}\boldsymbol{p}_{r}(t)}={^{b_0}_{b}\boldsymbol{R}(t)}\cdot{^{b}\boldsymbol{p}_{r}}+{^{b_0}\boldsymbol{p}_{b}(t)}
+	\end{equation}
+	左扰动时间求导：
+	\begin{equation}
+	{^{b_0}\dot{\boldsymbol{p}}_{r}(t)}=-\liehat{{^{b_0}_{b}\boldsymbol{R}(t)}\cdot{^{b}\boldsymbol{p}_{r}}}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(t)}+{^{b_0}\dot{\boldsymbol{p}}_{b}(t)}
+	\end{equation}
+	所以:
+	\begin{equation}
+	{^{b_0}\dot{\boldsymbol{p}}^r_r(\tau)}={^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(t)}\cdot{^{b_0}\dot{\boldsymbol{p}}_r(\tau)}={^{b}_{r}\boldsymbol{R}^\top}\cdot{^{b_0}_{b}\boldsymbol{R}^\top(t)}\cdot
+	\left(
+	{^{b_0}\dot{\boldsymbol{p}}_{b}(t)}-\liehat{{^{b_0}_{b}\boldsymbol{R}(t)}\cdot{^{b}\boldsymbol{p}_{r}}}\cdot{^{b_0}_{b}\dot{\boldsymbol{R}}(t)}
+	\right) 
+	\end{equation}
+	
+	\section{\normf{中心约束问题}}
+	由于引入了中心约束，所以实际上的批处理优化问题是一个附有限制条件的最小二乘问题。但是，使用Ceres无法求解这样的问题，因为Ceres目前支持的约束只是边界约束(upper and lower bounds constraints)。
+	
+	对此之前处理的方式是直接在目标函数中增加中心损失残差函数：
+	\begin{equation}
+	\begin{cases}
+	\begin{aligned}
+	\boldsymbol{r}_{ctr}(et)&=\sum^{i}_{\mathcal{N}_b}
+	{^{b^c}\boldsymbol{p}_{b^i}}
+	\\
+	\boldsymbol{r}_{ctr}(er)&=\sum^{i}_{\mathcal{N}_b}
+	\mathrm{Log}\left( {^{b^c}_{b^i}\boldsymbol{R}}\right)
+	\\
+	\boldsymbol{r}_{ctr}(tm)&=\sum^{i}_{\mathcal{N}_b}
+	{^{b^c}\boldsymbol{\tau}_{b^i}}
+	\end{aligned}
+	\end{cases}
+	\end{equation}
+	当然，也可以在求解的时候不加中心约束，直接将某个IMU的外参固定为单位旋转，不进行优化。这样得到的IMU外参姿态就是相对于这个IMU的，即这个IMU就是参考IMU。最后在将所有IMU的外参对齐到中心IMU。
+	
+	假设现在所有的IMU的外参旋转是相对于参考IMU(不是中心IMU)表示的，若要求解所有的IMU相对于中心IMU的外参旋转，可以先求解中心IMU相对于参考IMU的外参姿态，然后再对齐到中心IMU：
+	\begin{algorithm}[h]
+		\caption{\normf{计算旋转矩阵的平均矩阵}}
+		\LinesNumbered 
+		\KwIn{\normf{$\{^{b^r}_{b^i}{\boldsymbol{R}}\}$，其中$\{b^i\}$表示第$i$个IMU，$b^r$表示参考IMU}}
+		\KwOut{\normf{$\{^{b^c}_{b^i}{\boldsymbol{R}}\}=\{{^{b^r}_{b^c}\boldsymbol{R}^\top}\cdot{^{b^r}_{b^i}\boldsymbol{R}}\}$，其中$\{b^c\}$表示中心IMU}}
+		set ${^{b^r}_{b^c}\boldsymbol{R}}:={^{b^r}_{b^0}\boldsymbol{R}}$, and choose desired tolerance $\epsilon>0$.
+	
+		\Repeat{$\Vert\boldsymbol{\phi}\Vert>\epsilon$}{
+		compute $\boldsymbol{\phi}:=\frac{1}{k}\sum_{i=1}^{k}\mathrm{Log}\left({^{b^r}_{b^c}\boldsymbol{R}^\top}\cdot {^{b^r}_{b^i}\boldsymbol{R}}\right) $
+		
+		update ${^{b^r}_{b^c}\boldsymbol{R}}:={^{b^r}_{b^c}\boldsymbol{R}}\cdot\mathrm{Exp}\left(\boldsymbol{\phi} \right) $}
+		align $\{^{b^c}_{b^i}{\boldsymbol{R}}\}:=\{{^{b^r}_{b^c}\boldsymbol{R}^\top}\cdot{^{b^r}_{b^i}\boldsymbol{R}}\}$
+	\end{algorithm}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+\end{document}
+
