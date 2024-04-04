@@ -6,7 +6,7 @@
 
 ### 3.1 Simulation Test
 
-We provide four simulation experiments, the corresponding data are in the '`{*}/RIs-Calib/src/ris_calib/output`' folder:
+We provide four simulation experiments, the corresponding data are in the '`ris_calib/output`' folder:
 
 + '`simu1`' and '`simu2`': one IMU and one radar.
 + '`simu3`' and '`simu4`' three IMUs and three radars.
@@ -14,13 +14,13 @@ We provide four simulation experiments, the corresponding data are in the '`{*}/
 
 <div align=center><img src="docs/img/traj1.png" width =50%><img src="docs/img/traj2.png" width =50%></div>
 
-To perform calibration for dataset '`simu1`' or '`simu2`', you should change field '`config_path`' in '`{*}/RIs-Calib/src/ris_calib/launch/ris-calib-prog.launch`' to:
+To perform calibration for dataset '`simu1`' or '`simu2`', you should change field '`config_path`' in '`ris_calib/launch/ris-calib-prog.launch`' to:
 
 ```sh
 $(find ris_calib)/config/config-simu12.yaml
 ```
 
-The file '`config-simu12.yaml`' is a configure file for '`RIs-Calib`', which could be found in folder '`{*}/RIs-Calib/src/ris_calib/config`'. The detail configure information could determined be by yourself. Then, we launch '`RIs-Calib`' (**before launch `RIs-Calib`, remember change the path or directory in the yaml-format configure file!**):
+The file '`config-simu12.yaml`' is a configure file for '`RIs-Calib`', which could be found in folder '`/ris_calib/config`'. The detail configure information could determined be by yourself. Then, we launch '`RIs-Calib`' (**before launch `RIs-Calib`, remember change the path or directory in the yaml-format configure file!**):
 
 ```sh
 roslaunch ris_calib ris-calib-prog.launch
@@ -30,7 +30,7 @@ The calibration results (left: splines for simu1, middle: splines for simu2, rig
 
 <div align=center><img src="docs/img/splines1.png" width =33%><img src="docs/img/splines2.png" width =33%><img src="docs/img/sensor12.png" width =33%></div>
 
-For simu3 and simu4, you should change field '`config_path`' in '`{*}/RIs-Calib/src/ris_calib/launch/ris-calib-prog.launch`' to:
+For simu3 and simu4, you should change field '`config_path`' in '`ris_calib/launch/ris-calib-prog.launch`' to:
 
 ```sh
 $(find ris_calib)/config/config-simu34.yaml
@@ -46,7 +46,7 @@ The calibration results (left: splines for `simu3`, middle: splines for `simu4`,
 
 <div align=center><img src="docs/img/splines3.png" width =33%><img src="docs/img/splines4.png" width =33%><img src="docs/img/sensor3.png" width =33%></div>
 
-You could use scripts in '`{*}/RIs-Calib/src/ris_calib/scripts`' to draw figures:
+You could use scripts in '`ris_calib/scripts`' to draw figures:
 
 <details open>
     <summary><b><i>Distributions of IMU factors (accelerometer factor & gyroscope factor) in batch optimizations</i></b></summary>

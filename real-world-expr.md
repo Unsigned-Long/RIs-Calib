@@ -39,13 +39,13 @@ Each data contains a ros bag, an information file, and a corresponding configura
 + `duration.txt`: the file that records the time duration of the valid data piece (they are excited sufficiently, and thus could be used for calibration).
 + `config-real.yaml`: the corresponding configuration file.
 
-The next steps are simple, just modify the file paths of the ros bag in the configuration file, and then configure the launch file of `RIs-Calib`, i.e., `ris-calib-prog.launch` in the `{*}/RIs-Calib/src/ris_calib` folder. Then, we launch '`RIs-Calib`':
+The next steps are simple, just modify the file paths of the ros bag in the configuration file, and then configure the launch file of `RIs-Calib`, i.e., `ris-calib-prog.launch` in the `ris_calib` folder. Then, we launch '`RIs-Calib`':
 
 ```sh
 roslaunch ris_calib ris-calib-prog.launch
 ```
 
-You could use scripts in '`{*}/RIs-Calib/src/ris_calib/scripts`' to draw figures:
+You could use scripts in '`ris_calib/scripts`' to draw figures:
 
 <details open>
     <summary><b><i>Distributions of IMU factors (accelerometer factor & gyroscope factor) in batch optimizations</i></b></summary>

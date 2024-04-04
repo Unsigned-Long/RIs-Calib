@@ -87,16 +87,19 @@ https://github.com/Unsigned-Long/RIs-Calib/assets/76953144/3b34d9c5-edda-45f8-ac
 
 ### 2.2 Clone and Compile RIs-Calib
 
-+ clone `RIs-Calib` (**no need to create a new ros workspace! `RIs-Calib` repository is exactly a ros ws**):
++ create a ros workspace if needed and clone `RIs-Calib` to `src` directory as `ris_clib`:
 
   ```bash
-  git clone --recursive https://github.com/Unsigned-Long/RIs-Calib.git 
+  mkdir -p ~/RIs-Calib/src
+  cd ~/RIs-Calib/src
+  
+  git clone --recursive https://github.com/Unsigned-Long/RIs-Calib.git ris_calib
   ```
 
-  change directory to '`{*}/RIs-Calib`', and run '`build_thirdparty.sh`'.
+  change directory to '`ris_clib`', and run '`build_thirdparty.sh`'.
 
   ```bash
-  cd {*}/RIs-Calib
+  cd ris_clib
   chmod +x build_thirdparty.sh
   ./build_thirdparty.sh
   ```
@@ -108,14 +111,14 @@ https://github.com/Unsigned-Long/RIs-Calib/assets/76953144/3b34d9c5-edda-45f8-ac
   clone ros packages '`ainstein_radar`', '`ti_mmwave_rospkg`', '`serial`', '`sbg_ros_driver`' to '`{*}/RIs-Calib/src`':
 
   ```sh
-  cd {*}/RIs-Calib/src
+  cd ../src
   git clone https://github.com/AinsteinAI/ainstein_radar.git
   git clone https://github.com/Unsigned-Long/ti_mmwave_rospkg.git
   git clone https://github.com/wjwwood/serial.git
   git clone https://github.com/SBG-Systems/sbg_ros_driver.git
   ```
 
-  then build these packages:
+  then change directory to the ros workspace to build these packages:
 
   ```sh
   cd ..
@@ -124,10 +127,9 @@ https://github.com/Unsigned-Long/RIs-Calib/assets/76953144/3b34d9c5-edda-45f8-ac
 
   Note that these packages will depend on many other ros packages, you need to install them patiently.
 
-+ change directory to the ros workspace (i.e., '`{*}/RIs-Calib`'), and run:
++ compile `RIs-Calib`:
 
   ```bash
-  cd {*}/RIs-Calib
   catkin_make -DCATKIN_WHITELIST_PACKAGES=""
   ```
 
@@ -146,7 +148,7 @@ https://github.com/Unsigned-Long/RIs-Calib/assets/76953144/3b34d9c5-edda-45f8-ac
 
 ### 3.3 Skip Tutorial
 
-Find a **configure file** named `config-real-world.yaml` in `{*}/RIs-Calib/src/ris_calib/config` **or** from the open-source datasets below:
+Find a **configure file** named `config-real-world.yaml` in `/ris_calib/config` **or** from the open-source datasets below:
 
 ```txt
 # Google Drive
@@ -155,7 +157,7 @@ https://drive.google.com/drive/folders/1_SPdmBnWIJTYyOIkyS0StbPMGVLdV_fw?usp=dri
 
 Then **change the fields** in the configure files to be compatible with your dataset (there are detailed comments for each field). You only need to change a few fields related to io (input and output), perhaps some additional fields related to optimization.
 
-Then **give the path of your configuration file to the launch file** of `RIs-Calib` named `ris-calib-prog.launch` in folder `{*}/RIs-Calib/src/ris_calib/launch`, Then, we **launch** '`RIs-Calib`':
+Then **give the path of your configuration file to the launch file** of `RIs-Calib` named `ris-calib-prog.launch` in folder `ris_calib/launch`, Then, we **launch** '`RIs-Calib`':
 
 ```sh
 roslaunch ris_calib ris-calib-prog.launch
