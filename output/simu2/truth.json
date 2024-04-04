@@ -1,0 +1,63 @@
+{
+    "CalibParam": {
+        "EXTRI": {
+            "SO3_RtoB": {
+                "value0": 0.2308130859876117,
+                "value1": 0.19956572516889885,
+                "value2": 0.07960424450132775,
+                "value3": 0.948979454430948
+            },
+            "POS_RinB": {
+                "value0": 0.15,
+                "value1": 0.2,
+                "value2": 0.25
+            }
+        },
+        "TEMPORAL": {
+            "TIME_OFFSET_RtoB": 0.005
+        },
+        "INTRI": {
+            "ACCE": {
+                "BIAS": {
+                    "value0": 0.0,
+                    "value1": 0.0,
+                    "value2": 0.0
+                },
+                "MAP_COEFF": {
+                    "value0": 1.0,
+                    "value1": 1.0,
+                    "value2": 1.0,
+                    "value3": 0.0,
+                    "value4": 0.0,
+                    "value5": 0.0
+                }
+            },
+            "GYRO": {
+                "BIAS": {
+                    "value0": 0.0,
+                    "value1": 0.0,
+                    "value2": 0.0
+                },
+                "MAP_COEFF": {
+                    "value0": 1.0,
+                    "value1": 1.0,
+                    "value2": 1.0,
+                    "value3": 0.0,
+                    "value4": 0.0,
+                    "value5": 0.0
+                }
+            },
+            "SO3_AtoG": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "GRAVITY": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": -9.797
+        }
+    }
+}

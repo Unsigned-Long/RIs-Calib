@@ -1,0 +1,23 @@
+MergeConfigor:
+  Bags:
+    - bagPath: /home/csl/dataset/data_926/data_2023926155612/imu/imu.bag
+      topicsToMerge:
+        - key: /imu/data
+          value: /imu1/frame
+    - bagPath: /home/csl/dataset/data_926/data_2023926155612/imu/sbg_imu_new.bag
+      topicsToMerge:
+        - key: /sbg/imu_data
+          value: /imu2/frame
+    - bagPath: /home/csl/dataset/data_926/data_2023926155612/radar/radar1.bag
+      topicsToMerge:
+        - key: /radar_scan0
+          value: /radar1/scan
+    - bagPath: /home/csl/dataset/data_926/data_2023926155612/radar/radar2.bag
+      topicsToMerge:
+        - key: /radar_scan1
+          value: /radar2/scan
+    # - bagPath: /home/csl/dataset/data_926/data_2023926155612/lidar/lidar.bag
+    #   topicsToMerge:
+    #     - key: /velodyne_points
+    #       value: /lidar/scan
+  OutputBagPath: /home/csl/dataset/data_926/data_2023926155612/radars_imus.bag

@@ -1,0 +1,69 @@
+Configor:
+  DataStream:
+    # key: IMU topic, value: IMU type. Supported IMU types are:
+    #   1. SENSOR_IMU: https://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Imu.html
+    #   2. SBG_IMU: https://github.com/SBG-Systems/sbg_ros_driver.git
+    #   3. ...
+    IMUTopics:
+      - key: /imu1/frame
+        value: SENSOR_IMU
+      - key: /imu2/frame
+        value: SBG_IMU
+    # key: radar topic, value: radar type. Supported radar types are:
+    #   1.      AINSTEIN_RADAR: https://github.com/AinsteinAI/ainstein_radar.git
+    #   2.    AWR1843BOOST_RAW: https://github.com/Unsigned-Long/ti_mmwave_rospkg.git
+    #   3. AWR1843BOOST_CUSTOM: https://github.com/Unsigned-Long/ti_mmwave_rospkg.git
+    #   4.    POINTCLOUD2_POSV: 'sensor_msgs/PointCloud2' with point format: [x, y, z, velocity]
+    #   5.   POINTCLOUD2_POSIV: 'sensor_msgs/PointCloud2' with point format: [x, y, z, intensity, velocity]
+    #   6. ...
+    RadarTopics:
+      - key: /radar1/scan
+        value: AWR1843BOOST_CUSTOM
+      - key: /radar2/scan
+        value: AWR1843BOOST_CUSTOM
+    BagPath: /home/csl/dataset/data_926/data_202392616822/radars_imus.bag
+    # valid start time of this bag: 40
+    # valid   end time of this bag: 175
+    BeginTime: 40
+    # 'EndTime' - 'BeginTime'
+    Duration: 50
+    # the directory where the outputs of RIs-Calib could be saved in
+    OutputPath: /home/csl/ros_ws/RIs-Calib/src/ris_calib/output/data_202392616822
+  Prior:
+    # the range where the time offsets would be optimized.
+    # make sure this range contains the ground truth of time offsets
+    # If you're not sure, make this field large, but this could lead to longer optimization time
+    TimeOffsetPadding: 0.13
+    # the time distance of two neighbor control points, which determines the accuracy
+    # of the representation of the B-splines. Smaller distance would lead to longer optimization time
+    # common choices: from '0.02' to '0.10'
+    SplineKnotTimeDistance: 0.08
+    # the loss function used for radar factor
+    CauchyLossForRadarFactor: 0.1
+    # these wights should be given according to the noise density of sensors
+    Weight:
+      AcceWeight: 17.68
+      GyroWeight: 57.66
+      RadarWeight: 1.00
+      VelPIMWeight: 10
+  Preference:
+    # whether output the spatiotemporal parameters each iteration
+    OutputParamInEachIter: true
+    # whether output the LM equations each batch optimization
+    OutputLMEquationGraph: true
+    # whether output the B-splines after optimizations
+    OutputBSplines: true
+    # supported data output format:
+    # (0): JSON
+    # (1): XML
+    # (2): YAML
+    # (3): BINARY (not recommended)
+    OutputDataFormat: 0
+    # if sensor are hardware-synchronized, you could choose to fix temporal parameters by setting this field to 'false'
+    OptTemporalParams: true
+    # we recommend optimizing the intrinsics of IMUs
+    OptIntrinsicParams: true
+    # number of thread to use for solving, negative value means use all valid thread to perform solving
+    ThreadsToUse: -1
+    # do not initialize the velocity bspline in initialization procedure
+    InitVelocityBspline: false

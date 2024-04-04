@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<launch>
+
+    <node pkg="ris_calib" type="ris_calib_prog" name="ris_calib_prog_node" output="screen">
+        <!-- change the value of this field to the path of your self-defined config file -->
+        <param name="config_path" value="$(find ris_calib)/config/config-simu34.yaml" type="string"/>
+    </node>
+
+</launch>

@@ -1,0 +1,186 @@
+CalibParam:
+  EXTRI:
+    SO3_BiToBc:
+      - key: /simu_imu0
+        value:
+          value0: 0
+          value1: 2.775557561562891e-17
+          value2: 0
+          value3: 1
+      - key: /simu_imu1
+        value:
+          value0: 0.8992757474648275
+          value1: -0.009843983885324925
+          value2: 0.2851984355655195
+          value3: -0.3314635400067729
+      - key: /simu_imu2
+        value:
+          value0: 0.8045082320324192
+          value1: -0.04210301556888787
+          value2: 0.1784478617103883
+          value3: -0.5649338026026298
+    POS_BiInBc:
+      - key: /simu_imu0
+        value:
+          value0: 0
+          value1: 0
+          value2: 0
+      - key: /simu_imu1
+        value:
+          value0: 1.013426664399097
+          value1: -0.3428948112500779
+          value2: -0.1294734060628574
+      - key: /simu_imu2
+        value:
+          value0: 0.6171215027626191
+          value1: 0.03727675094835747
+          value2: -0.1251689927365445
+    SO3_RjToBc:
+      - key: /simu_radar0
+        value:
+          value0: 0.290660850002676
+          value1: -0.558417964905184
+          value2: 0.7665921844240973
+          value3: -0.126578313809141
+      - key: /simu_radar1
+        value:
+          value0: -0.3632412237113646
+          value1: 0.8510677556747199
+          value2: 0.06371195666493776
+          value3: -0.3737382442638039
+      - key: /simu_radar2
+        value:
+          value0: -0.1386677783929245
+          value1: 0.898946556813341
+          value2: 0.2582154958253419
+          value3: -0.3255627327331589
+    POS_RjInBc:
+      - key: /simu_radar0
+        value:
+          value0: 0.279053967902734
+          value1: 0.2649909849583501
+          value2: 0.1769194178861819
+      - key: /simu_radar1
+        value:
+          value0: 0.3540415909147767
+          value1: -0.4857384693635601
+          value2: 0.2933275046507144
+      - key: /simu_radar2
+        value:
+          value0: 0.7246433110065762
+          value1: -0.009885918504195818
+          value2: 0.1680887868071705
+  TEMPORAL:
+    TIME_OFFSET_BiToBc:
+      - key: /simu_imu0
+        value: 0
+      - key: /simu_imu1
+        value: 0.00270307398576759
+      - key: /simu_imu2
+        value: 0.00160025961747784
+    TIME_OFFSET_RjToBc:
+      - key: /simu_radar0
+        value: 0.01230713863712697
+      - key: /simu_radar1
+        value: 0.009361908911528619
+      - key: /simu_radar2
+        value: 0.006286165602701075
+  INTRI:
+    IMU:
+      - key: /simu_imu0
+        value:
+          ACCE:
+            BIAS:
+              value0: 0
+              value1: 0
+              value2: 0
+            MAP_COEFF:
+              value0: 1
+              value1: 1
+              value2: 1
+              value3: 0
+              value4: 0
+              value5: 0
+          GYRO:
+            BIAS:
+              value0: 0
+              value1: 0
+              value2: 0
+            MAP_COEFF:
+              value0: 1
+              value1: 1
+              value2: 1
+              value3: 0
+              value4: 0
+              value5: 0
+          SO3_AtoG:
+            value0: 0
+            value1: 0
+            value2: 0
+            value3: 1
+      - key: /simu_imu1
+        value:
+          ACCE:
+            BIAS:
+              value0: 0
+              value1: 0
+              value2: 0
+            MAP_COEFF:
+              value0: 1
+              value1: 1
+              value2: 1
+              value3: 0
+              value4: 0
+              value5: 0
+          GYRO:
+            BIAS:
+              value0: 0
+              value1: 0
+              value2: 0
+            MAP_COEFF:
+              value0: 1
+              value1: 1
+              value2: 1
+              value3: 0
+              value4: 0
+              value5: 0
+          SO3_AtoG:
+            value0: 0
+            value1: 0
+            value2: 0
+            value3: 1
+      - key: /simu_imu2
+        value:
+          ACCE:
+            BIAS:
+              value0: 0
+              value1: 0
+              value2: 0
+            MAP_COEFF:
+              value0: 1
+              value1: 1
+              value2: 1
+              value3: 0
+              value4: 0
+              value5: 0
+          GYRO:
+            BIAS:
+              value0: 0
+              value1: 0
+              value2: 0
+            MAP_COEFF:
+              value0: 1
+              value1: 1
+              value2: 1
+              value3: 0
+              value4: 0
+              value5: 0
+          SO3_AtoG:
+            value0: 0
+            value1: 0
+            value2: 0
+            value3: 1
+  GRAVITY:
+    value0: 0
+    value1: 0
+    value2: -9.797000000000001
