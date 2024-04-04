@@ -41,7 +41,7 @@ Aided inertial navigation system (INS), typically consisting of an inertial meas
 
 Our accompanying videos are now available on **YouTube** (click below images to open) and [Bilibili](https://www.bilibili.com/video/BV1pw411y7NR/?vd_source=87245258ec5029cca67d77cef1a6201d).
 
-[![RIs-Calib](docs/img/demo.png)](https://youtu.be/CoOjn-9c4Dc)
+[![RIs-Calib](docs/img/demo.jpg)](https://youtu.be/CoOjn-9c4Dc)
 
 ## 2. Build RIs-Calib
 
