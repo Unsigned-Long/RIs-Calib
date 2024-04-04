@@ -110,7 +110,7 @@ Our accompanying videos are now available on **YouTube** (click below images to 
   clone ros packages '`ainstein_radar`', '`ti_mmwave_rospkg`', '`serial`', '`sbg_ros_driver`' to '`{*}/RIs-Calib/src`':
 
   ```sh
-  cd ../src
+  cd ..
   git clone https://github.com/AinsteinAI/ainstein_radar.git
   git clone https://github.com/Unsigned-Long/ti_mmwave_rospkg.git
   git clone https://github.com/wjwwood/serial.git
