@@ -6,7 +6,7 @@
 
 ## 0. Preliminaries
 
-If you use ***RIs-Calib*** in a scientific publication, please cite the following  paper:smile::
+If you use ***RIs-Calib*** in a scientific publication, please cite the following  paper :smile::
 
 ```latex
 # todo...
