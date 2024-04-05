@@ -49,18 +49,19 @@ You could use scripts in '`ris_calib/scripts`' to draw figures:
 
 <details open>
     <summary><b><i>Distributions of IMU factors (accelerometer factor & gyroscope factor) in batch optimizations</i></b></summary>
-    <div align=center><img src="docs/img/figures-real/imu_residuals.png" width =100%><img src="docs/img/figures/iter_info.png" width =100%></div>
+    <div align=center><img src="docs/img/figures-real/imu_residuals.png" width =80%><img src="docs/img/figures/iter_info.png" width =80%></div>
 </details>
 
 <details open>
     <summary><b><i>Convergence performance of spatiotemporal parameters for IMUs</i></b></summary>
-    <div align=center><img src="docs/img/figures-real/imu_imu1_frame.png" width =100%><img src="docs/img/figures-real/imu_imu2_frame.png" width =100%></div>
+    <div align=center><img src="docs/img/figures-real/imu_imu1_frame.png" width =80%><img src="docs/img/figures-real/imu_imu2_frame.png" width =80%></div>
 </details>
 
 <details open>
     <summary><b><i>Convergence performance of spatiotemporal parameters for Radars</i></b></summary>
-    <div align=center><img src="docs/img/figures-real/radar_radar1_scan.png" width =100%><img src="docs/img/figures-real/radar_radar2_scan.png" width =100%></div>
+    <div align=center><img src="docs/img/figures-real/radar_radar1_scan.png" width =80%><img src="docs/img/figures-real/radar_radar2_scan.png" width =80%></div>
 </details>
+
 
 <details open>
     <summary><b><i>Sensor suites & rotation and velocity B-splines</i></b></summary>
