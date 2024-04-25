@@ -129,10 +129,10 @@ catkin_package(
 ## Build ##
 ###########
 
-set(TinyViewer_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/ctraj/thirdparty/tiny-viewer-build)
+set(tiny-viewer_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/ctraj/thirdparty/tiny-viewer-install/lib/cmake/tiny-viewer)
 find_package(TinyViewer)
-set(CTraj_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/ctraj-build)
-find_package(CTraj)
+set(ctraj_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/ctraj-install/lib/cmake/ctraj)
+find_package(ctraj)
 find_package(magic_enum)
 find_package(yaml-cpp)
 
@@ -171,7 +171,7 @@ target_link_libraries(
         ${YAML_CPP_LIBRARIES}
 
         # thirdparty
-        CTraj::CTraj
+        ctraj
 )
 
 ## Declare a C++ library

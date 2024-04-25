@@ -20,16 +20,11 @@ echo "----------------------------------"
 echo "build thirdparty: 'tiny-viewer'..."
 echo "----------------------------------"
 
-mkdir ${RIS_CALIB_ROOT_PATH}/thirdparty/ctraj/thirdparty/tiny-viewer-build
 # shellcheck disable=SC2164
-cd "${RIS_CALIB_ROOT_PATH}"/thirdparty/ctraj/thirdparty/tiny-viewer-build
+cd "${RIS_CALIB_ROOT_PATH}"/thirdparty/ctraj
 
-cmake ../tiny-viewer
-echo current path: $PWD
-echo "-----------------------------"
-echo "start making 'tiny-viewer'..."
-echo "-----------------------------"
-make -j8
+chmod +x build_thirdparty.sh
+./build_thirdparty.sh
 
 # build ctraj
 echo "----------------------------"
@@ -46,3 +41,4 @@ echo "-----------------------"
 echo "start making 'ctraj'..."
 echo "-----------------------"
 make -j8
+cmake --install . --prefix ${RIS_CALIB_ROOT_PATH}/thirdparty/ctraj-install
