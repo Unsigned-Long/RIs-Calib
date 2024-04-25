@@ -130,7 +130,7 @@ catkin_package(
 ###########
 
 set(tiny-viewer_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/ctraj/thirdparty/tiny-viewer-install/lib/cmake/tiny-viewer)
-find_package(TinyViewer)
+find_package(tiny-viewer)
 set(ctraj_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/ctraj-install/lib/cmake/ctraj)
 find_package(ctraj)
 find_package(magic_enum)
