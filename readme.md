@@ -44,7 +44,7 @@ Our accompanying videos are now available on **YouTube** (click below images to 
 
 + install `Sophus`:
 
-  see the `GitHub` Profile of **[Sophus](https://github.com/strasdat/Sophus.git)** library, clone it, compile it, and install it.
+  see the `GitHub` Profile of **[Sophus](https://github.com/strasdat/Sophus.git)** library, clone it, compile it, and install it. **Set option`SOPHUS_USE_BASIC_LOGGING` on when compile (cmake) the Sophus library, this would avoid to involve `fmt` logger dependency (as the following `spdlog` would use internal `fmt` too, which may lead to conflict).**
 
 + install `magic-enum`:
 
@@ -54,16 +54,12 @@ Our accompanying videos are now available on **YouTube** (click below images to 
 
   see the `GitHub` Profile of **[Pangolin](https://github.com/stevenlovegrove/Pangolin.git)** library, clone it, compile it, and install it.
 
-+ install `spdlog`:
-
-  see the `GitHub` Profile of **[spdlog](https://github.com/gabime/spdlog.git)** library, clone it, compile it, and install it.
-
-+ install `fmt`, `Cereal`, `spdlog`, `yaml-cpp`:
++ install `cereal`, `yaml-cpp`, and `spdlog`:
 
   ```bash
-  sudo apt-get install libfmt-dev
   sudo apt-get install libcereal-dev
   sudo apt-get install libyaml-cpp-dev
+  sudo apt-get install libspdlog-dev
   ```
 
 
