@@ -124,12 +124,12 @@ Our accompanying videos are now available on [YouTube](https://youtu.be/CoOjn-9c
 
 ### 3.1 Simulation Test
 
-[***datasets, launch, result visualization***](simu-expr.md)
+[datasets, launch, result visualization](simu-expr.md)
 
 
 ### 3.2 Real-world Experiments
 
-[***datasets, launch, result visualization***](real-world-expr.md)
+[datasets, launch, result visualization](real-world-expr.md)
 
 ### 3.3 Skip Tutorial
 
