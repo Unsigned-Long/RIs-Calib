@@ -13,7 +13,7 @@
 ## 0. Preliminaries
 
 If you use `RIs-Calib` in a scientific publication, please cite the following paper 👇:
- + **S. Chen**, X. Li*, S. Li, Y. Zhou and S. Wang, RIs-Calib: An Open-Source Spatiotemporal Calibrator for Multiple 3D Radars And IMUs Based on Continuous-Time Estimation. arXiv:2408.02444 [cs.RO]. [[paper-arXiv](https://arxiv.org/abs/2408.02444)] [[code](https://github.com/Unsigned-Long/RIs-Calib)] [[video](https://www.bilibili.com/video/BV1pw411y7NR/?vd_source=87245258ec5029cca67d77cef1a6201d)]
+ + **S. Chen**, X. Li, S. Li, Y. Zhou and S. Wang, "RIs-Calib: An Open-Source Spatiotemporal Calibrator for Multiple 3D Radars and IMUs Based on Continuous-Time Estimation," in IEEE Transactions on Instrumentation and Measurement (TIM), 2024. [[paper](https://ieeexplore.ieee.org/document/10816177)] [[paper-arXiv](https://arxiv.org/abs/2408.02444)] [[code](https://github.com/Unsigned-Long/RIs-Calib)] [[video](https://www.bilibili.com/video/BV1pw411y7NR/?vd_source=87245258ec5029cca67d77cef1a6201d)]
 
 <p align="left">
     <a><strong>Todo List »</strong></a>
